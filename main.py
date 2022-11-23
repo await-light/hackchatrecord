@@ -14,7 +14,7 @@ class Client:
 
 	def loadfile(self):
 		try:
-			return pd.read_csv("data.csv")
+			return pd.read_csv("data.csv",index_col=0)
 		except pd.errors.EmptyDataError:
 			return pd.DataFrame(
 				[]
@@ -46,7 +46,7 @@ class Client:
 				"%Y-%m-%d %H:%M:%S",
 				time.localtime(rv["time"]/1000)
 			)
-			print(rv.to_string())
+			# print(rv.to_string())
 			self.csvdata = pd.concat(
 				[
 					self.csvdata,
