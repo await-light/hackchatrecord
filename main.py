@@ -21,7 +21,7 @@ class Client:
 			)
 
 	def updatefile(self):
-		self.csvdata.to_csv("data.csv")
+		self.csvdata.to_csv("data.csv",index=True)
 
 	def record(self):
 		self._ws.send(
