@@ -1,5 +1,6 @@
 import pandas as pd
-from flask import Flask,request
+import matplotlib.pyplot as plt
+from flask import Flask,request,render_template
 
 def definearg(value,args):
    if value in args:
@@ -12,7 +13,7 @@ app = Flask(__name__)
 @app.route('/')
 def home():
    messages = len(pd.read_csv("data.csv"))
-   return ("<b>Link:</b><br>/lookup<br>" \
+   return ("<b>Link:</b><br>/lookup,/image<br>" \
       f"<br><b>Messages:</b><br>{messages}<br>" \
       "<br><b>Examples:</b><br>/lookup?time=2022-11-19/2022-11-21" \
       "<br>/lookup?time=all&nick=light<br>" \
@@ -50,6 +51,23 @@ def lookup():
                if start[2]<=stime[2]<=end[2]:
                   reply = reply + formattxt
    return reply
+
+@app.route('/image')
+def image():
+   data = pd.read_csv("data.csv",index_col=0)
+   messages_total = data.trip
+   tenmost = messages_total.value_counts()[:5]
+   tenmostlabel,tenmostsize = tenmost.keys(),tenmost.values 
+   otherlabel,othersize = ["other"],[messages_total.count() - tenmost.count()]
+   labels,sizes = list(tenmostlabel)+otherlabel,list(tenmostsize)+othersize 
+   fig = plt.figure()
+   plt.pie(sizes,autopct="%1.1f%%",startangle=90)
+   plt.legend(labels,loc=(1,0),fontsize=10)
+   fig.savefig("./static/image.png")
+   info = ""
+   for label,size in messages_total.value_counts().items():
+      info += "<a href=\"http://43.142.118.149:5000/lookup?trip={}\">{}</a> : {}<br>".format(label,label,size)
+   return '<img src="static/image.png"><br>{}'.format(info)
 
 if __name__ == '__main__':
    app.run(host="0.0.0.0",port=5000,debug=True)
