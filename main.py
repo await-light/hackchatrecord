@@ -42,10 +42,7 @@ class Client:
 				jsondata,
 				index=["time","nick","trip","uType","text"]
 			)
-			rv["time"] = time.strftime(
-				"%Y-%m-%d %H:%M:%S",
-				time.localtime(rv["time"]/1000)
-			)
+			rv["time"] /= 1000
 			# print(rv.to_string())
 			self.csvdata = pd.concat(
 				[
