@@ -2,6 +2,9 @@
 Record messages in hack.chat
 (Python3.x bot)
 
+## Example
+https://thz.cool/lookup
+
 ## Usage
 Install required packages
 ```text
