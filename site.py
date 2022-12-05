@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+from matplotlib import ticker
 from multiprocessing import Process
 from flask import Flask,request,render_template
 
@@ -46,6 +47,8 @@ def updateimages():
    x,y = st.keys(),st.values()
    plt.title("YC Activity")
    plt.plot(x,y)
+   plt.gca().xaxis.set_major_locator(ticker.MultipleLocator(len(x)//2))
+   plt.xticks(fontsize=8)
    plt.savefig("./static/image_c.png")
 
 app = Flask(__name__)
